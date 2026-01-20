@@ -6,6 +6,9 @@ from models.model import MobileNetV2_Alzheimer_Classfier
 import torch.functional as F
 from torch import nn
 
+mean = [0.1650, 0.1650, 0.1650]
+std = [0.1761, 0.1761, 0.1761]
+
 classes_map = {0:'Mild Dementia',
                1:'Moderate Dementia',
                2:'Non Demented',
@@ -29,8 +32,8 @@ if upload_image is not None:
     transform = transforms.Compose([
         transforms.Resize((224, 224)),  # حسب ما الموديل تدرب عليه
         transforms.ToTensor(),           # HxWxC -> CxHxW + normalize [0,1]
-        # يمكنك إضافة normalize إذا الموديل تدرب على ImageNet
-        # transforms.Normalize(mean=[0.485,0.456,0.406], std=[0.229,0.224,0.225])
+         transforms.Normalize(mean=mean,std=std)
+    
     ])
     test_image = transform(image).unsqueeze(0)  # إضافة batch dimension
 
